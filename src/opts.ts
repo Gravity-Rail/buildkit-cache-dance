@@ -1,5 +1,11 @@
 import mri from 'mri';
 import { promises as fs } from 'fs';
+// Deep import of @actions/core/lib/core.js is intentional, paired with the
+// `=1.8.0` pin in package.json. 1.8.1+ pulls in @actions/http-client@2 which
+// transitively loads undici; parcel cannot bundle undici's class-extends
+// pattern and produces a dist/index.js that crashes at import time. See the
+// fix commit 392bbef ("fix: avoid bundling of http deps from actions").
+// Do not change either of these without also fixing the bundler issue.
 import { getInput, warning } from '@actions/core/lib/core.js';
 import { DockerfileParser, ModifiableInstruction } from 'dockerfile-ast';
 
